@@ -107,7 +107,8 @@ class _Request(object):
           )
         except (rq.exceptions.ReadTimeout, rq.exceptions.ConnectTimeout,
                 rq.exceptions.ConnectionError, HdfsError) as err:
-          if isinstance(err, HdfsError) and err.exception != 'StandbyException':
+          if isinstance(err, HdfsError) and \
+             err.exception not in ('StandbyException', 'RetriableException'):
             if not strict:
                 return
             raise err
